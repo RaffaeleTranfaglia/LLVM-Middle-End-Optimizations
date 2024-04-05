@@ -46,6 +46,27 @@ Examples:
 - `y = x + 2; z = y - 2` &#8594; every use of `z` is replaced with `x`
 - `y = x + 2; z = y / 2` &#8594; every use of `z` is replaced with `x`
 
+## Testing
+`Tests.zip` file contains different LLVM files to test the optimizations.
+
+To extract the folder
+```
+unzip Tests.zip
+```
+
+To test compile the source code:
+```
+cd $SRC
+make opt
+make install
+```
+
+To run tests:
+```
+opt -p localopts <file_name.ll> -o <file_name.bc>
+llvm-dis <file_name.bc> -o <file_name.ll>
+```
+
 ## Authors
 - Raffaele Tranfaglia
 - Matteo Venturi
