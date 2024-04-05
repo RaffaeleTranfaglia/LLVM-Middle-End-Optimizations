@@ -1,27 +1,27 @@
 # LLVM-Middle-End-Optimizations
+Machine independent passes to optimise LLVM intermediate representation.  
 
-## Changes done on LocalOpts
+## Installation
+In order to run the optimization passes, it is necessary having LLVM 17.0.6 source code installed.
+Official repository [here](https://github.com/llvm/llvm-project).  
 
-File LocalOpts contains various methods to complete the first assignment for the project.
-
-A convention followed to implements these methods is to use original names of optimizations (for non-ambigous purposes), so Algebraic Identity is resolved into `AlgebraicIdentity` method.
-
-## How to use
-
-LocalOpts file must be moved into the right directory to work properly. 
-
+Clone the current repository:
 ```
-cd LocalOpts.cpp $SRC/llvm/bin/Transforms/Utils
 ```
-Where `$SRC` is the source folder of the project
 
-After that 
-
+LocalOpts file must be moved into the following directory to work properly:  
+```
+cd LocalOpts.cpp $SRC/llvm/lib/Transforms/Utils
+```
+Where `$SRC` is the source folder of the project.  
+To compile the source code:
 ```
 cd $ROOT/BUILD
 make -j4
 make opt
 ```
+
+To install the source files already containig the optimized passes: [here](https://github.com/Glixes/LLVM_middle_end).
 
 ## Optimizations
 
