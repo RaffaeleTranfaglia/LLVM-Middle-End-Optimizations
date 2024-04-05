@@ -40,8 +40,13 @@ Example:
 Observations:  
 In case the element "subtracted" can be optimized, the algorithm will optimize further more the operation. In case it is used on divisions, the divisor **must** be an exact multiple of 2.
 
-### Multi-instruction optimizations
+### Multi-instruction optimization
 Multi instruction optimization operates in cases where, given a SSA register, the same fixed amount is addend and subtracted from it.
 Examples:
 - `y = x + 2; z = y - 2` &#8594; every use of `z` is replaced with `x`
 - `y = x + 2; z = y / 2` &#8594; every use of `z` is replaced with `x`
+
+## Authors
+- Raffaele Tranfaglia
+- Matteo Venturi
+- Mirco Piccinini
