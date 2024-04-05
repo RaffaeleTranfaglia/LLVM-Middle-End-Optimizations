@@ -41,8 +41,7 @@ Observations:
 In case the element "subtracted" can be optimized, the algorithm will optimize further more the operation. In case it is used on divisions, the divisor **must** be an exact multiple of 2.
 
 ### Multi-instruction optimizations
-Multi instruction optimization is an operation made on expressions like `y = x + 2; z = y -2` which can be optimized in this way: `y = x + 2; z = x`. 
-
-This optimization has been done using uses of Instructions. For every uses, we substitute the symbol representing the instruction with the instruction itself. 
-
-We implemented that searching for uses of `y`, checking future instructions. Once checked, we replace uses of `z` with `x`.
+Multi instruction optimization operates in cases where, given a SSA register, the same fixed amount is addend and subtracted from it.
+Examples:
+- `y = x + 2; z = y - 2` &#8594; every use of `z` is replaced with `x`
+- `y = x + 2; z = y / 2` &#8594; every use of `z` is replaced with `x`
