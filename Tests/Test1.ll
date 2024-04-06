@@ -1,9 +1,9 @@
 ; int test_algebraic_identity(int e, int a) {
-;   int b = a + 0;
-;   int c = 0 - b;
-;   b = e / 1;
-;   c = b + a;
-;   return c * b;
+;   int b = a + 0;  // -> b = a
+;   int c = 0 - b;  // not optimized
+;   b = e / 1;      // -> b = e
+;   c = b + a;      // -> c = a + a
+;   return c * b;   // -> return c * a
 ; }
 
 define dso_local i32 @test_algebraic_identity(i32 noundef %0, i32 noundef %1) #0 {

@@ -1,9 +1,10 @@
 ; int test_strength_reduction(int e, int a) {
-;   int b = a + 1;
-;   int c = b * 30;
-;   int d = e * 1;
-;   int b = a / 10;
-;   int f = b / 16	
+;   int b = a + 1;    // not optimized
+;   int c = b * 30;   // -> c = b << 5; c1 = b * 2; c = c - c1;
+;                     // -> c = b << 5; c1 = b << 1; c = c - c1;
+;   int d = e * 1;    // -> d = e; -> deleted
+;   int b = a / 10;   // -> deleted
+;   int f = b / 16	  // -> f >> 4
 ;   return c * f;
 ; }
 
