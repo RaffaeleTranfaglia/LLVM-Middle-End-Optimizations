@@ -2,7 +2,7 @@
 ;   int b = a + 1;    // not optimized
 ;   int c = b * 30;   // -> c = b << 5; c1 = b * 2; c = c - c1;
 ;                     // -> c = b << 5; c1 = b << 1; c = c - c1;
-;   int d = e * 1;    // -> d = e;
+;   int d = e * 1;    // -> d = e; -> deleted
 ;   int f = a / 10;   // not optimized
 ;   int g = c / 16	  // -> c >> 4
 ;   int h = b + d;    // -> h = b + e
