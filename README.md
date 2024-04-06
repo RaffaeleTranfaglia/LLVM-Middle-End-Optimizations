@@ -19,8 +19,11 @@ Add `LocalOpts.cpp` in `$SRC/llvm/lib/Transforms/Utils/CMakeLists.txt`.
 ```
 $SRC/llvm/include/llvm/Transforms/Utils
 ```
-Replace `SRC/lib/Passes/PassRegistry.def` and `SRC/lib/Passes/PassBuilder.cpp` with 
-the provided `src/PassRegistry.def` and `src/PassBuilder.cpp`.  
+Replace `SRC/llvm/lib/Passes/PassRegistry.def` with the provided `src/PassRegistry.def`.  
+Add the follwing line to `SRC/llvm/lib/Passes/PassBuilder.cpp`:
+```
+#include "llvm/Transforms/Utils/LocalOpts.h"
+```
 Where `$SRC` is the source folder of the project.  
 To compile the source code:
 ```
@@ -32,6 +35,16 @@ make install
 Otherwise, to install the source code already containig the optimized passes' files: [here](https://github.com/Glixes/LLVM_middle_end).
 
 ## Introduced Optimizations
+
+### Constant Folding
+Constant Folding execute at compile time operations involving contant values.
+Examples:
+- `x = 4 + 9` &#8594; `x = 13 + 0`
+- `x = 6 * 2` &#8594; `x = 12 + 0`
+
+Observation:
+The assignment of the computed constant is carryed out using an addition of the given constant with zero.
+Afterwards the introduced `add` will furtherly be optimized by the Algebric Identity optimization.
 
 ### Algebraic Identity optimization 
 Algebraic Identity aims to optimise operation containing neutral values.  
