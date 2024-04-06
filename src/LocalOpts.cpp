@@ -88,7 +88,7 @@ size_t getNConstants (Instruction &inst)
 
 /** @brief Apply constant folding optimization on a binary instruction and susbtitute the instruction uses, if possible.
  * 
- * Shifts are not folder.
+ * Shifts are not folded.
  * 
  * @param inst the binary instruction
  * @return true if optimized, false otherwise
