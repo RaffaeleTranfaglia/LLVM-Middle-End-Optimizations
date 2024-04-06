@@ -2,25 +2,34 @@
 Machine independent passes to optimise LLVM intermediate representation.  
 
 ## Installation
-In order to run the optimization passes, it is necessary having LLVM 17.0.6 source code installed.
+In order to run the optimization passes, it is necessary having LLVM 17.0.6 source code installed.  
 Official repository [here](https://github.com/llvm/llvm-project).  
 
+The following steps assume that LLVM 17.0.6 has been installed.  
 Clone the current repository:
 ```
 https://github.com/RaffaeleTranfaglia/LLVM-Middle-End-Optimizations.git
 ```
-LocalOpts file must be moved into the following directory to work properly:  
+`src/LocalOpts.cpp` file must be moved to the following directory:  
 ```
-cd LocalOpts.cpp $SRC/llvm/lib/Transforms/Utils
+$SRC/llvm/lib/Transforms/Utils
 ```
+Add `LocalOpts.cpp` in `$SRC/llvm/lib/Transforms/Utils/CMakeLists.txt`.
+`src/LocalOpts.h` file must be moved to the following directory:  
+```
+$SRC/llvm/include/llvm/Transforms/Utils
+```
+Replace `SRC/lib/Passes/PassRegistry.def` and `SRC/lib/Passes/PassBuilder.cpp` with 
+the provided `src/PassRegistry.def` and `src/PassBuilder.cpp`.  
 Where `$SRC` is the source folder of the project.  
 To compile the source code:
 ```
 cd $ROOT/BUILD
-make -j4
+make opt
+make install
 ```
   
-Otherwise, to install the source code already containig the optimized passes: [here](https://github.com/Glixes/LLVM_middle_end).
+Otherwise, to install the source code already containig the optimized passes' files: [here](https://github.com/Glixes/LLVM_middle_end).
 
 ## Introduced Optimizations
 
@@ -47,24 +56,19 @@ Examples:
 - `y = x + 2; z = y / 2` &#8594; every use of `z` is replaced with `x`
 
 ## Testing
-`Tests.zip` file contains different LLVM files to test the optimizations.
+`Tests` folder contains different LLVM files to test the optimizations.
 
-To extract the folder
+Compile the source code:
 ```
-unzip Tests.zip
-```
-
-To test compile the source code:
-```
-cd $SRC
+cd $ROOT/BUILD
 make opt
 make install
 ```
 
 To run tests:
 ```
-opt -p localopts <file_name.ll> -o <file_name.bc>
-llvm-dis <file_name.bc> -o <file_name.ll>
+opt -p localopts <file_name>.ll -o <file_name_optimized>.bc
+llvm-dis <file_name_optimized>.bc -o <file_name_optimized>.ll
 ```
 
 ## Authors
