@@ -37,13 +37,13 @@ Otherwise, to install the source code already containig the optimized passes' fi
 ## Introduced Optimizations
 
 ### Constant Folding
-Constant Folding execute at compile time operations involving contant values.
+Constant Folding execute at compile time operations involving contant values.  
 Examples:
 - `x = 4 + 9` &#8594; `x = 13 + 0`
 - `x = 6 * 2` &#8594; `x = 12 + 0`
 
 Observation:
-The assignment of the computed constant is carryed out using an addition of the given constant with zero.
+The assignment of the computed constant is carryed out using an addition of the given constant with zero.  
 Afterwards the introduced `add` will furtherly be optimized by the Algebric Identity optimization.
 
 ### Algebraic Identity optimization 
