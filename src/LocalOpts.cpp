@@ -6,8 +6,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-#define DEBUG
-
 #include "llvm/Transforms/Utils/LocalOpts.h"
 #include "llvm/IR/InstrTypes.h"
 #include "llvm/IR/Instructions.h"
@@ -95,19 +93,11 @@ size_t getNConstants (Instruction &inst)
 */
 bool ConstantFolding (Instruction &inst)
 {
-  #ifdef  DEBUG
-  llvm::outs() << "Entered in function ConstantFolding\n";
-  #endif
-
   ConstantInt *C1 = dyn_cast<ConstantInt>(inst.getOperand(0));
   ConstantInt *C2 = dyn_cast<ConstantInt>(inst.getOperand(1));
 
   if (!C1 || !C2)
     return false;
-
-  #ifdef  DEBUG
-  llvm::outs() << "C1 :" << C1 << ",\tC2 :" <<C2 << "\n";
-  #endif
 
   APInt fact1 = C1->getValue();
   APInt fact2 = C2->getValue();
@@ -145,10 +135,6 @@ bool ConstantFolding (Instruction &inst)
   // a dummy add instruction with second operand 0 is added, which will be optmized in subsequent steps
   Instruction *addi = BinaryOperator::Create(Instruction::Add, result, zero);
 
-  #ifdef  DEBUG
-  llvm::outs() << "Folding done. Result = " << result << "\nSubstituing operation\n";
-  #endif
-
   addi->insertAfter(&inst);
   inst.replaceAllUsesWith(addi);
 
@@ -167,12 +153,6 @@ bool ConstantFolding (Instruction &inst)
 */
 bool AlgebraicIdentity (Instruction &inst, std::pair<Value*, ConstantInt*> *VC)
 {
-  #ifdef  DEBUG
-  llvm::outs() << "Entered in function AlgebraicIdentity\n";
-  #endif
-
-  // VC derives from getVarAndConst, which can return a ConstantInt in first position
-
   bool ToReplace = false;
 
   // Switch case has been adopted for modularity reasons
@@ -210,10 +190,6 @@ bool AlgebraicIdentity (Instruction &inst, std::pair<Value*, ConstantInt*> *VC)
 */
 bool StrengthReduction (Instruction &inst, std::pair<Value*, ConstantInt*> *VC)
 {
-  #ifdef DEBUG
-  llvm::outs() << "Entered in function StrengthReduction\n";
-  #endif
-
   // Negative constants are not handled
   unsigned int shiftVal = VC->second->getValue().ceilLogBase2();
   ConstantInt *shift = ConstantInt::get(VC->second->getType(), shiftVal);
@@ -260,10 +236,6 @@ bool StrengthReduction (Instruction &inst, std::pair<Value*, ConstantInt*> *VC)
     }
   }
 
-  #ifdef DEBUG
-  llvm::outs() << "LastInst: " << lastinst << "\n";
-  #endif
-
   if (lastinst)
     inst.replaceAllUsesWith(lastinst);
   // if lastinst is nullptr (e.g. strength reduction has not been adopted), it returns false, otherwise true
@@ -284,10 +256,6 @@ bool StrengthReduction (Instruction &inst, std::pair<Value*, ConstantInt*> *VC)
 */
 bool MultiInstructionOpt (Instruction &inst, std::pair<Value*, ConstantInt*> *VC)
 {
-  #ifdef  DEBUG
-  llvm::outs() << "Entered in function MultiInstructionOpt\n";
-  #endif
-
   for (auto &use : inst.uses())
   {
     Instruction *User = dyn_cast<Instruction>(use.getUser());
@@ -296,18 +264,10 @@ bool MultiInstructionOpt (Instruction &inst, std::pair<Value*, ConstantInt*> *VC
 
     std::pair<Value*, ConstantInt*> *VCUser = getValAndConst(*User);
 
-    #ifdef DEBUG
-    outs() << "I'm inside getMultiInstruction, just before the if\n";
-    #endif
-
     if (!VCUser->second 
       || (VCUser->second->getValue() != VC->second->getValue()) 
       || (oppositeOp.at(static_cast<BinaryOperator::BinaryOps>(inst.getOpcode())) != User->getOpcode()))
       continue;
-    
-    #ifdef DEBUG
-    outs() << "I'm inside getMultiInstruction, just before the return\n";
-    #endif
 
     User->replaceAllUsesWith(VC->first);
     return true;
@@ -334,10 +294,6 @@ bool runOnBasicBlock(BasicBlock &B)
       // check if the current operation is binary
       if (!inst.isBinaryOp())
         continue;
-
-      #ifdef  DEBUG
-      outs() << "Instruction: " << inst << "\n";
-      #endif
       
       // if the binary instruction has no constants no optmization is possible
       size_t nConstants = getNConstants(inst);
@@ -371,9 +327,6 @@ bool runOnBasicBlock(BasicBlock &B)
       // if, after optmizations, an instruction has no uses, it's dead code
       if (!inst.getNumUses())
       {
-        #ifdef  DEBUG
-        outs() << "Instruction: " << inst << " is in DeadCode\n";
-        #endif
         DeadCode.insert(&inst);
       }
 
