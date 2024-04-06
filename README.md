@@ -8,7 +8,7 @@ Official repository [here](https://github.com/llvm/llvm-project).
 The following steps assume that LLVM 17.0.6 has been installed.  
 Clone the current repository:
 ```
-https://github.com/RaffaeleTranfaglia/LLVM-Middle-End-Optimizations.git
+git clone https://github.com/RaffaeleTranfaglia/LLVM-Middle-End-Optimizations.git
 ```
 `src/LocalOpts.cpp` file must be moved to the following directory:  
 ```
