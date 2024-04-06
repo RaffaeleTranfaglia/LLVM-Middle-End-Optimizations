@@ -14,7 +14,7 @@ git clone https://github.com/RaffaeleTranfaglia/LLVM-Middle-End-Optimizations.gi
 ```
 $SRC/llvm/lib/Transforms/Utils
 ```
-Add `LocalOpts.cpp` in `$SRC/llvm/lib/Transforms/Utils/CMakeLists.txt`.
+Add `LocalOpts.cpp` in `$SRC/llvm/lib/Transforms/Utils/CMakeLists.txt`.  
 `src/LocalOpts.h` file must be moved to the following directory:  
 ```
 $SRC/llvm/include/llvm/Transforms/Utils
