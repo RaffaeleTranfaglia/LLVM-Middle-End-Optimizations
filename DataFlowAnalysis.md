@@ -27,7 +27,7 @@ input = Control Flow Graph CFG (Nodes, Edges, Entry, Exit)
 // Boundary condition in[Exit]
 
 // Initialization
-for each basic block B other than Exit
+for each basic block B
     in[B] = neutral set based on meet operator
 
 while (changes to any in[] occour)
@@ -39,5 +39,14 @@ while (changes to any in[] occour)
     }
 }
 ```
+
+Observations:
+- The meet operator is defined basing on the nature of the analysis.
+
+- The default domain's state initialization (bit vector) at the end/begin of each basic block depends on the meet operator.
+
+- Boundary condition is the conservative hypothesis of the data initial state. 
+
+- Transfer Function scope is to convey information regarding data's domain through the current basic block. Instructions visit order depends on the direction of the flow analysis. 
 
 $$ \text{hello world} $$
