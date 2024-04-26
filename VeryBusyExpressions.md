@@ -2,14 +2,17 @@
 
 ## Framework
 
-| Algorithm variable | Description |
+| Algorithm parameters | Value |
 | --- | --- |
-| Domain | sets of expressions |
+| Domain | set of expressions |
 | Direction |Backward: <br> $in[b] = f_b(out[b])$ <br> $out[b] = \wedge in[succ(b)]$|
-| Transfer function |$f_b(x) = Use_b \cup (out_b – Def_b)$ <br> The $Use_b$ are all the expressions used in a basic block. The $Def_b$ are all the definitions of variables which name is equal to an operand in the expression. |
+| Transfer function |$f_b(x) = Gen_b \cup (out_b – Kill_b)$ <br> |
 | Meet operation |$\cap$|
-| Boundary Condition |$in[entry] = \emptyset$|
+| Boundary Condition |$in[exit] = \emptyset$|
 | Initial interior points |$in[b] = U$|
+
+- The $Gen_b$ are all the expressions used in a basic block. The $Kill_b$ are all the definitions of variables which name is equal to an operand in the expression.
+- We consider only binary expressions for simplicity
 
 ## Pseudocode
 
@@ -17,17 +20,17 @@
 input = Control Flow Graph CFG (Nodes, Edges, Entry, Exit)
 
 // Boundary condition
-    in[b] = ∅
+    in[Exit] = ∅
 
 // Initialization
-for each basic block B
-    in[B] = ∅
+for each basic block B other than Exit
+    in[B] = U
 
 while (changes to any in[] occour)
 {
     for each basic block B other than Exit
     {
-        out[B] = u(in[s]) for all successors s of B
+        out[B] = ∩(in[s]) for all successors s of B
         in[B] = Fb(out[B])
     }
 }
@@ -37,37 +40,39 @@ while (changes to any in[] occour)
 
 ![image](images/Screenshot%202024-04-25%20alle%2016.28.40.png)
 
+Domain: (a-b), (b-a)
+
 ||Gen|Kill|
 |---|---|---|
-|B2|||
-|B3|b-a||
-|B4|a-b||
-|B5|b-a||
-|B6||a-b <br> b-a|
-|B7|a-b||
-|B8|||
+|BB2|||
+|BB3|b-a||
+|BB4|a-b||
+|BB5|b-a||
+|BB6||a-b <br> b-a|
+|BB7|a-b||
+|BB8|||
 
-|| Initialization||
-|---|---|---|
-||IN[B]|OUT[B]|
-|BB2|$\emptyset$||
-|BB3|$\emptyset$||
-|BB4|$\emptyset$||
-|BB5|$\emptyset$||
-|BB6|$\emptyset$||
-|BB7|$\emptyset$||
-|BB8| $\emptyset$||
+|| Initialization|
+|---|---|
+||IN[B]|
+|BB2|U|
+|BB3|U|
+|BB4|U|
+|BB5|U|
+|BB6|U|
+|BB7|U|
+|BB8|U|
 
 || Iteration 1||
 |---|---|---|
 ||IN[B]|OUT[B]|
-|BB2|$\emptyset$ $\cup$ {{b-a} - $\emptyset$} = b-a|{b-a,a-b} meet_operator {b-a} = b-a|
-|BB3|{b-a} $\cup$ {{a-b} - $\emptyset$} = {b-a, a-b}|a-b|
-|BB4|{a-b} $\cup$ {$\emptyset$ - $\emptyset$} = a-b |$\emptyset$|
-|BB5|{b-a} $\cup$ {$\emptyset$ - $\emptyset$} = b-a|$\emptyset$|
-|BB6|$\emptyset$ $\cup$ {(a-b) - (a-b)} = $\emptyset$ |a-b|
-|BB7|{a-b} $\cup$ {$\emptyset$ - $\emptyset$} = a-b|in[BB8] = $\emptyset$|
-|BB8| $\emptyset$||
+|BB2|Ø $\cup$ {(b-a) - Ø} = b-a| {(b-a),(a-b)} ∩ (b-a) = b-a|
+|BB3|(b-a) $\cup$ {(a-b) - Ø} = {(b-a), (a-b)}|a-b|
+|BB4|(a-b) $\cup$ {Ø - Ø} = a-b |Ø|
+|BB5|(b-a) $\cup$ {Ø - Ø} = b-a|Ø|
+|BB6| Ø $\cup$ {(a-b) - (a-b),(b-a)} = Ø |(a-b)|
+|BB7|(a-b) $\cup$ {Ø - Ø} = a-b|in[BB8] = Ø|
+|BB8| Ø||
 
 Changes have been registered
 
