@@ -71,7 +71,7 @@ Domain: (a-b), (b-a)
 |BB4|(a-b) $\cup$ {Ø - Ø} = a-b |Ø|
 |BB5|(b-a) $\cup$ {Ø - Ø} = b-a|Ø|
 |BB6| Ø $\cup$ {(a-b) - (a-b),(b-a)} = Ø |(a-b)|
-|BB7|(a-b) $\cup$ {Ø - Ø} = a-b|in[BB8] = Ø|
+|BB7|(a-b) $\cup$ {Ø - Ø} = a-b|Ø|
 |BB8| Ø||
 
 Changes have been registered
