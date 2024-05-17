@@ -77,7 +77,14 @@ Optimization tasks addressed:
 - Constant Propagation
 
 ### Loop Invariant Code Motion (LICM)
-`LoopOpts.cpp` and `LoopOpts.h` files contain the Loop Invariant Code Motion pass.
+Instructions that meet the following requirements are candidate for code motion:
+- are invariant
+-  dominate their uses
+-   dominate the exits of the loop or are dead outside the loop
+
+Candidated instruction may be moved outside the loop (just before the loop header, in the so called preheader block) in order to be executed only one time.  
+  
+`LoopOpts.cpp` and `LoopOpts.h` files contain the Loop Invariant Code Motion pass.  
 In order to make the pass work, `src/LoopOpts.cpp` file must be moved to the following directory:  
 ```
 $SRC/llvm/lib/Transforms/Utils
