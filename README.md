@@ -92,6 +92,30 @@ Optimization tasks addressed:
 - Dominator Analysis
 - Constant Propagation
 
+### Loop Invariant Code Motion (LICM)
+`LoopOpts.cpp` and `LoopOpts.h` files contain the Loop Invariant Code Motion pass.
+In order to make the pass work, `src/LoopOpts.cpp` file must be moved to the following directory:  
+```
+$SRC/llvm/lib/Transforms/Utils
+```
+Add `LoopOpts.cpp` in `$SRC/llvm/lib/Transforms/Utils/CMakeLists.txt`.  
+`src/LoopOpts.h` file must be moved to the following directory:  
+```
+$SRC/llvm/include/llvm/Transforms/Utils
+```
+Replace `SRC/llvm/lib/Passes/PassRegistry.def` with the provided `src/PassRegistry.def`.  
+Add the follwing line to `SRC/llvm/lib/Passes/PassBuilder.cpp`:
+```
+#include "llvm/Transforms/Utils/LoopOpts.h"
+```
+Where `$SRC` is the source folder of the project.  
+To compile the source code:
+```
+cd $ROOT/BUILD
+make opt
+make install
+```
+
 ## Authors
 - Raffaele Tranfaglia
 - Matteo Venturi
