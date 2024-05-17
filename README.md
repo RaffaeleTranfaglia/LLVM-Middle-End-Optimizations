@@ -69,22 +69,6 @@ Examples:
 - `y = x + 2; z = y - 2` &#8594; every use of `z` is replaced with `x`
 - `y = x + 2; z = y / 2` &#8594; every use of `z` is replaced with `x`
 
-### Testing
-`Tests` folder contains different LLVM files to test the optimizations.
-
-Compile the source code:
-```
-cd $ROOT/BUILD
-make opt
-make install
-```
-
-To run tests:
-```
-opt -p localopts <file_name>.ll -o <file_name_optimized>.bc
-llvm-dis <file_name_optimized>.bc -o <file_name_optimized>.ll
-```
-
 ## Global Optimizations
 `DataFlowAnalysis` folder contains global optimizations algorithms.  
 Optimization tasks addressed:
@@ -115,6 +99,24 @@ cd $ROOT/BUILD
 make opt
 make install
 ```
+
+## Testing
+`Tests` folder contains different LLVM files to test the optimizations.
+
+Compile the source code:
+```
+cd $ROOT/BUILD
+make opt
+make install
+```
+
+To run tests:
+```
+opt -p <optimization_pass_name> <file_name>.ll -o <file_name_optimized>.bc
+llvm-dis <file_name_optimized>.bc -o <file_name_optimized>.ll
+```
+Note:
+Implemented passes names are `localopts` and `loopopts`.
 
 ## Authors
 - Raffaele Tranfaglia
