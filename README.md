@@ -166,8 +166,8 @@ To create a file that uses virtual registries starting from the file written in 
 opt -p mem2reg <file_name>.c -o <file_name_virtualmem>.bc
 llvm-dis <file_name_virtualmem>.bc -o <file_name_virtualmem>.ll
 ```
-This step is needed only for global passes.
-To directly start from the .ll file with virtual registries, both source files (.c and .ll) are provided in the `Tests/` directory.
+This step is needed only for global passes.  
+To directly start from the .ll file with virtual registers, both source files (.c and .ll) are provided in the `Tests/` directory.
 
 To run tests:
 ```
