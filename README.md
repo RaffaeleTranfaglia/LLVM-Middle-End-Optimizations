@@ -134,7 +134,7 @@ $SRC/llvm/include/llvm/Transforms/Utils
 Replace `SRC/llvm/lib/Passes/PassRegistry.def` with the provided `src/PassRegistry.def`.  
 Add the follwing line to `SRC/llvm/lib/Passes/PassBuilder.cpp`:
 ```
-#include "llvm/Transforms/Utils/LoopOpts.h"
+#include "llvm/Transforms/Utils/LoopFusion.h"
 ```
 Where `$SRC` is the source folder of the project.  
 To compile the source code:
