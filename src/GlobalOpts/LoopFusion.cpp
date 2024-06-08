@@ -31,10 +31,16 @@ bool areAdjacent (Loop *l1, Loop *l2)
     for (BasicBlock *BB : exit_blocks)
     {
         if (l2->isGuarded() && BB != dyn_cast<BasicBlock>(l2->getLoopGuardBranch()))
+        {
+            outs() << "Second Loop is guarded, exit block of first loop is not equal to entry block of second loop";
             return false;
+        }
 
         if (BB != l2->getLoopPreheader() || BB->size() > 1)
+        {
+            outs() << "exit block of first loop is not equal to entry block of second loop or there are instructions between the loops";
             return false;
+        }
     }
     return true;
 }
@@ -65,6 +71,17 @@ bool haveSameIterationsNumber (Loop *l1, Loop *l2, ScalarEvolution *SE)
     return getTripCount(l1) == getTripCount(l2);
 }
 
+/** @brief Get the entry block of a loop, if it is guarded it returns the guard block.
+ * 
+ * @param l loop
+ * @return BasicBlock *
+ */
+BasicBlock *getEntryBlock (Loop *l)
+{
+    if (l->isGuarded())
+        return l->getLoopGuardBranch()->getParent();
+    return l->getLoopPreheader();
+}
 
 /** @brief Returns true if the loops are control flow equivalent.
  * I.e. when l1 executes, also l2 executes and when l2 executes also l1 executes.
@@ -78,8 +95,8 @@ bool haveSameIterationsNumber (Loop *l1, Loop *l2, ScalarEvolution *SE)
 */
 bool areFlowEquivalent (Loop *l1, Loop *l2, DominatorTree *DT, PostDominatorTree *PDT)
 {
-    BasicBlock *B1 = l1->getHeader();
-    BasicBlock *B2 = l2->getHeader();
+    BasicBlock *B1 = getEntryBlock(l1);
+    BasicBlock *B2 = getEntryBlock(l2);
     
     return (DT->dominates(B1, B2) && PDT->dominates(B2, B1));
 }
@@ -345,6 +362,11 @@ void fuseLoop (Loop *l1, Loop *l2)
     */
     PHINode *index1 = l1->getCanonicalInductionVariable();
     PHINode *index2 = l2->getCanonicalInductionVariable();
+    if (!index1 || !index2)
+    {
+        outs() << "Induction variables are not canonical\n";
+        return;
+    }
     index2->replaceAllUsesWith(index1);
 
     /*
@@ -398,6 +420,7 @@ void fuseLoop (Loop *l1, Loop *l2)
 
     delete first_loop; delete second_loop;
 
+    outs() << "Fusion done\n";
     return;
 }
 
@@ -440,7 +463,6 @@ PreservedAnalyses LoopFusion::run (Function &F,FunctionAnalysisManager &AM)
                 outs() << "Starting fusion ...\n";
                 fuseLoop(l1, l2);
                 fusion_happened = true;
-                outs() << "Fusion done\n";
                 break;
             }
         }
