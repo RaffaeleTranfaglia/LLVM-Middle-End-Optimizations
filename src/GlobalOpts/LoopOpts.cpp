@@ -47,6 +47,7 @@ bool isAlreadyLoopInvariant (Instruction *inst)
  *  - It is a parameter of the function
  *  - The relative Instruction is already marked as LoopInvariant
  *  - Loop doesn not contain the relative instruction
+ *  - It is a constant value
  * Instructions which have phi instructions as operands are not invariant because a phi instruction 
  * value change basing on the execution flow by definition.
  * 
